@@ -24,3 +24,8 @@ class DoubanTop250Spider(Spider):
             item["score"] = movie.xpath('.//span[@class="rating_num"]/text()').extract()[0]
             item["description"] = movie.xpath('.//span[@class="inq"]/text()').extract()[0]
             yield item
+
+        next_url = response.xpath('//span[@class="next"]/a/@href').extract_first()
+        if next_url:
+            next_url = "https://movie.douban.com/top250" + next_url
+            yield Request(next_url, headers=self.headers)
